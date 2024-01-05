@@ -17,6 +17,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

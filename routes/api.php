@@ -17,3 +17,17 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/friends', [FriendsController::class, 'index']);
+    Route::delete('/friends/remove', [FriendsController::class, 'destroy']);
+
+    Route::get('/pending-friends', [PendingFriendsController::class, 'index']);
+    Route::post('/pending-friends', [PendingFriendsController::class, 'store']);
+    Route::post('/accept-friend', [PendingFriendsController::class, 'update']);
+
+    Route::get('/sent-requests', [SentRequestFriendsController::class, 'index']);
+
+    Route::get('/suggestions', [UsersController::class, 'index']);
+});
