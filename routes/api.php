@@ -2,7 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Api\FriendsController;
+use App\Http\Controllers\Api\PendingFriendsController;
+use App\Http\Controllers\Api\SentRequestFriendsController;
+use App\Http\Controllers\Api\UsersController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
