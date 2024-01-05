@@ -32,7 +32,7 @@ class PendingFriendsController extends Controller
             return response()->json(['message' => 'Recipient not found'], 404);
         }
 
-        $sender->pendingFriends()->attach($recipientId, ['sender_id' => $sender->id, 'status' => ConnectionEnums::Pending->value]);
+        $sender->sentRequest()->attach($recipientId, ['sender_id' => $sender->id, 'status' => ConnectionEnums::Pending->value]);
 
         return response()->json(['message' => 'Friend request sent']);
     }
@@ -42,7 +42,7 @@ class PendingFriendsController extends Controller
         $senderId = $request->input('sender_id');
         $recipient = Auth::user();
         
-        $recipient->friendRequests()->updateExistingPivot($senderId, ['status' => ConnectionEnums::Accepted->value]);
+        $recipient->sentRequest()->updateExistingPivot($senderId, ['status' => ConnectionEnums::Accepted->value]);
 
         return response()->json(['message' => 'Friend request accepted']);
     }

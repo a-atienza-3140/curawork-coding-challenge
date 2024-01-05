@@ -5,11 +5,16 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Http\Resources\UserResource;
 
 class UsersController extends Controller
 {
-    public function index(): Json
+    /**
+     * @return JsonResource
+     */
+    public function index(): JsonResource
     {
-        return User::all();
+        $users = User::paginate(10);
+        return UserResource::collection($users);
     }
 }
