@@ -17,6 +17,13 @@ class FriendsController extends Controller
     {
         $user = Auth::user();
         $friends = $user->friends()->paginate(10);
+
+        $friends->getCollection()->transform(function ($friend) use ($user) {
+            $mutualFriends = $user->mutualFriendsWith($friend)->get();
+            $friend->setRelation('mutualFriends', $mutualFriends);
+            return $friend;
+        });
+
         return UserResource::collection($friends);
     }
 

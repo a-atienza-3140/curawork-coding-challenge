@@ -82,6 +82,13 @@ class User extends Authenticatable
                     ->wherePivot('sender_id', '!=', $this->id);
     }
 
+    public function mutualFriendsWith(User $otherUser)
+    {
+        $myFriendsIds = $this->friends()->pluck('users.id')->toArray();
+
+        return $otherUser->friends()->whereIn('users.id', $myFriendsIds);
+    }
+
     public function hasFriendshipWith($userId)
     {
         $isAlreadyFriend = $this->friendsOfMine()->where('users.id', $userId)->exists() ||

@@ -17,7 +17,9 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'email' => $this->email
+            'email' => $this->email,
+            'mutual_friends_count' => isset($this->mutualFriends) ? $this->mutualFriends->count() : 0,
+            'mutual_friends' => isset($this->mutualFriends) ? $this->mutualFriends : null,
         ];
     }
 }
