@@ -32,7 +32,7 @@ class PendingFriendsController extends Controller
             return response()->json(['message' => 'Recipient not found'], 404);
         }
 
-        if ($user->hasFriendshipWith($recipientId)) {
+        if ($sender->hasFriendshipWith($recipientId)) {
             return response()->json(['message' => 'You are already friends or have a pending friend request with this user.'], 400);
         }
 

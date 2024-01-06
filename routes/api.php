@@ -26,11 +26,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/friends', [FriendsController::class, 'index']);
     Route::delete('/friends/remove', [FriendsController::class, 'destroy']);
 
-    Route::get('/received-requests', [PendingFriendsController::class, 'index']);
+    Route::get('/sent-requests', [PendingFriendsController::class, 'index']);
     Route::post('/pending-friends', [PendingFriendsController::class, 'store']);
     Route::post('/accept-friend', [PendingFriendsController::class, 'update']);
 
-    Route::get('/sent-requests', [SentRequestFriendsController::class, 'index']);
+    Route::get('/received-requests', [SentRequestFriendsController::class, 'index']);
 
     Route::get('/suggestions', [UsersController::class, 'index']);
 });

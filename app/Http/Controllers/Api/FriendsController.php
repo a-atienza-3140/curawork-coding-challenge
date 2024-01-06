@@ -32,9 +32,16 @@ class FriendsController extends Controller
         $friendId = $request->input('friend_id');
         $user = Auth::user();
 
-        $user->friends()->detach($friendId);
-        $user->sentRequest()->detach($friendId);
-        $user->receiveRequest()->detach($friendId);
+        if ($user->friends()->where('users.id', $friendId)->exists()) {
+            $user->friends()->detach($friendId);
+        }
+
+        if ($user->sentRequest()->where('users.id', $friendId)->exists()) {
+            $user->sentRequest()->detach($friendId);
+        }
+        if ($user->receiveRequest()) {
+            $user->receiveRequest()->detach($friendId);
+        }
 
         return response()->json(['message' => 'friend has been removed']);
     }

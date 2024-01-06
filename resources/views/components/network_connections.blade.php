@@ -22,11 +22,7 @@
             <div class="tab-content"></div>
             <div class="tab-content d-none"> </div>
             <div class="tab-content d-none"> </div>
-            <div class="tab-content d-none">
-                <span class="fw-bold">Connection Blade (Click on "Connections in common" to see the connections in common
-                  component)</span>
-                <x-connection />
-            </div>
+            <div class="tab-content d-none"> </div>
         </div>
 
 
