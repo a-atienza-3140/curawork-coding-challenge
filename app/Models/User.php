@@ -82,6 +82,17 @@ class User extends Authenticatable
                     ->wherePivot('sender_id', '!=', $this->id);
     }
 
+    public function usersWithoutConnection()
+    {
+        $connectedUserIds = $this->friendsOfMine()->pluck('users.id')
+            ->merge($this->friendOf()->pluck('users.id'))
+            ->merge($this->sentRequest()->pluck('users.id'))
+            ->merge($this->receiveRequest()->pluck('users.id'))
+            ->unique();
+
+        return User::whereNotIn('id', $connectedUserIds)->where('id', '!=', $this->id);
+    }
+
     public function mutualFriendsWith(User $otherUser)
     {
         $myFriendsIds = $this->friends()->pluck('users.id')->toArray();
