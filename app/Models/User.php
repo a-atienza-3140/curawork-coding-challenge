@@ -45,7 +45,26 @@ class User extends Authenticatable
 
     public function friends()
     {
+        $friendsOfMine = $this->friendsOfMine()
+                         ->select('users.id', 'users.name', 'users.email')
+                         ->getQuery();
+
+        $friendOf = $this->friendOf()
+                        ->select('users.id', 'users.name', 'users.email')
+                        ->getQuery();
+
+        return $friendsOfMine->union($friendOf);
+    }
+
+    public function friendsOfMine()
+    {
         return $this->belongsToMany(User::class, 'friendships', 'user_id', 'friend_id')
+                    ->wherePivot('status', ConnectionEnums::Accepted->value);
+    }
+
+    public function friendOf()
+    {
+        return $this->belongsToMany(User::class, 'friendships', 'friend_id', 'user_id')
                     ->wherePivot('status', ConnectionEnums::Accepted->value);
     }
 
@@ -61,5 +80,16 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'friendships', 'friend_id', 'user_id')
                     ->wherePivot('status', ConnectionEnums::Pending->value)
                     ->wherePivot('sender_id', '!=', $this->id);
+    }
+
+    public function hasFriendshipWith($userId)
+    {
+        $isAlreadyFriend = $this->friendsOfMine()->where('users.id', $userId)->exists() ||
+                           $this->friendOf()->where('users.id', $userId)->exists();
+    
+        $hasPendingRequest = $this->sentRequest()->where('users.id', $userId)->exists() ||
+                             $this->receiveRequest()->where('users.id', $userId)->exists();
+    
+        return $isAlreadyFriend || $hasPendingRequest;
     }
 }

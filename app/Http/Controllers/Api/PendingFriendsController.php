@@ -32,6 +32,10 @@ class PendingFriendsController extends Controller
             return response()->json(['message' => 'Recipient not found'], 404);
         }
 
+        if ($user->hasFriendshipWith($recipientId)) {
+            return response()->json(['message' => 'You are already friends or have a pending friend request with this user.'], 400);
+        }
+
         $sender->sentRequest()->attach($recipientId, ['sender_id' => $sender->id, 'status' => ConnectionEnums::Pending->value]);
 
         return response()->json(['message' => 'Friend request sent']);
@@ -41,8 +45,18 @@ class PendingFriendsController extends Controller
     {
         $senderId = $request->input('sender_id');
         $recipient = Auth::user();
-        
-        $recipient->sentRequest()->updateExistingPivot($senderId, ['status' => ConnectionEnums::Accepted->value]);
+
+        $exists = $recipient->receiveRequest()->where('user_id', $senderId)->exists();
+
+        if (!$exists) {
+            return response()->json(['message' => 'Friend request not found'], 404);
+        }
+
+        if ($recipient->hasFriendshipWith($senderId)) {
+            return response()->json(['message' => 'You are already friends.'], 400);
+        }
+
+        $recipient->receiveRequest()->updateExistingPivot($senderId, ['status' => ConnectionEnums::Accepted->value]);
 
         return response()->json(['message' => 'Friend request accepted']);
     }
