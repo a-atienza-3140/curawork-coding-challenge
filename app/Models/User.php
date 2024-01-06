@@ -11,7 +11,9 @@ use App\Enums\ConnectionEnums;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -104,10 +106,10 @@ class User extends Authenticatable
     {
         $isAlreadyFriend = $this->friendsOfMine()->where('users.id', $userId)->exists() ||
                            $this->friendOf()->where('users.id', $userId)->exists();
-    
+
         $hasPendingRequest = $this->sentRequest()->where('users.id', $userId)->exists() ||
                              $this->receiveRequest()->where('users.id', $userId)->exists();
-    
+
         return $isAlreadyFriend || $hasPendingRequest;
     }
 }

@@ -1,0 +1,12 @@
+********* TODO *************
+Clicking withdraw request should send a post request to delete connection and then reload data.
+Clicking Accept will send a post request to accept connection and then reload data.
+
+********* DOING *************
+Clicking connect on suggestions should send a post request and then reload the data.
+
+********* DONE *************
+Clicking load more should show more data.
+When data is more than 10, show load more button, otherwise hide.
+Remove load more text
+When querying, show loading skeleton.

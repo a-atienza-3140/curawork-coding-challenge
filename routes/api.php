@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\FriendsController;
 use App\Http\Controllers\Api\PendingFriendsController;
 use App\Http\Controllers\Api\SentRequestFriendsController;
 use App\Http\Controllers\Api\UsersController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -25,7 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/friends', [FriendsController::class, 'index']);
     Route::delete('/friends/remove', [FriendsController::class, 'destroy']);
 
-    Route::get('/pending-friends', [PendingFriendsController::class, 'index']);
+    Route::get('/received-requests', [PendingFriendsController::class, 'index']);
     Route::post('/pending-friends', [PendingFriendsController::class, 'store']);
     Route::post('/accept-friend', [PendingFriendsController::class, 'update']);
 
